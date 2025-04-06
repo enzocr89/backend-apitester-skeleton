@@ -1,5 +1,10 @@
 
 ## VERSION SANS FLASK_CORS
+import pathlib as pl
+
+import numpy as np
+import pandas as pd
+
 from flask import Flask, jsonify, request, make_response
 
 app = Flask(__name__)
