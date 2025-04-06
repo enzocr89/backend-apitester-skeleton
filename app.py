@@ -23,12 +23,10 @@ evenements_df = pd.read_csv(data / 'evenements_associations.csv')
 def check_alive():
     return jsonify({"message": "Alive"})
 
-# Liste de toutes les associations
 @app.route('/api/associations', methods=['GET'])
 def get_all_associations():
     return jsonify(associations_df['id'].tolist())
-
-# Détails d'une association
+    
 @app.route('/api/association/<int:id>', methods=['GET'])
 def get_association(id):
     association = associations_df[associations_df['id'] == id]
@@ -41,7 +39,6 @@ def get_association(id):
 def get_all_events():
     return jsonify(evenements_df['id'].tolist())
 
-# Détails d'un événement
 @app.route('/api/evenement/<int:id>', methods=['GET'])
 def get_event(id):
     event = evenements_df[evenements_df['id'] == id]
@@ -49,19 +46,15 @@ def get_event(id):
         return jsonify({"error": "Event not found"}), 404
     return jsonify(event.iloc[0].to_dict())
 
-# Liste des événements d'une association
 @app.route('/api/association/<int:id>/evenements', methods=['GET'])
 def get_association_events(id):
-    # Vérifier si l'association existe
     association = associations_df[associations_df['id'] == id]
     if association.empty:
         return jsonify({"error": "Association not found"}), 404
     
-    # Récupérer les événements de cette association
     events = evenements_df[evenements_df['association_id'] == id]
     return jsonify(events.to_dict(orient='records'))
 
-# Liste des associations par type
 @app.route('/api/associations/type/<type>', methods=['GET'])
 def get_associations_by_type(type):
     filtered_associations = associations_df[associations_df['type'] == type]
